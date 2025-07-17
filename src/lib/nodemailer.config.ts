@@ -19,6 +19,6 @@ interface NodemailerProps{
 
 export const sendMail =async({to, subject, html}: NodemailerProps)=>{
     const info = await transporter.sendMail({to, subject, html, from: "sinkansen auth" });
-    const testMailUrl = getTestMessageUrl(info);
-    console.log(testMailUrl);
+    getTestMessageUrl(info);
+    // console.log(getTestMessageUrl(info));
 };

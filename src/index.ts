@@ -1,11 +1,15 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { connectDb } from './src/db/connectDb';
-import authRoute from './src/db/routes/auth.route';
+import { connectDb } from './db/connectDb';
+import authRoute from './routes/auth.route';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+app.use(cookieParser());
+app.use(express.json());
 
 app.get('/', (req: Request, res: Response)=>{
     res.send("this is root");
