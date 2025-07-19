@@ -178,7 +178,7 @@ export const checkAuth =async(req: AuthRequest, res: Response)=>{
         if(!user){
             return res.status(400).json({success: false, message: "Unauthorize token."})
         }
-        res.status(200).json({success: false, message: "Authenticated."})
+        res.status(200).json({user, success: true, message: "Authenticated."})
     }catch(error){
         if(error instanceof Error){
             res.status(400).json({success: false, message: error.message});

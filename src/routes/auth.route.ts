@@ -4,7 +4,7 @@ import { verifyToken } from "../middleware/verifyToken";
 
 const authRoute = Router();
 
-authRoute.get('check-auth', verifyToken, checkAuth)
+authRoute.get('/check-auth', verifyToken, checkAuth)
 
 authRoute.post('/signup', signUp);
 
