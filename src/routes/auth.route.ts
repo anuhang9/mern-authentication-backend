@@ -14,7 +14,7 @@ authRoute.post('/logout', logout);
 
 authRoute.post('/login', login);
 
-authRoute.post('/forget-password', forgetPassword);
+authRoute.post('/forgot-password', forgetPassword);
 
 authRoute.post('/reset-password/:token', resetPassword);
 

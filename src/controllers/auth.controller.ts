@@ -45,7 +45,7 @@ export const signUp = async(req: Request, res: Response)=>{
         });
         res.status(200).json({success: true, message: "User create successfull."});
     }catch(error){
-        console.log(error)
+        // console.log(error)
         if(error instanceof Error){
             res.status(400).json({success: false, message: error.message});
         }
@@ -89,7 +89,7 @@ export const login = async(req: Request, res: Response)=>{
     try{
         const {userName, password} = req.body;
         if(!userName || !password){
-            return res.status(200).json({success: false, message: "Required all fields."});
+            return res.status(400).json({success: false, message: "Required all fields."});
         }
         const user = await User.findOne({userName});
         if(!user){
@@ -109,7 +109,7 @@ export const login = async(req: Request, res: Response)=>{
             res.status(400).json({success: false, message: error.message});
         }
         else{
-            res.send({success: false, message: "Some unknown error occured in log in page."});
+            res.status(400).json({success: false, message: "Some unknown error occured in log in page."});
         }
     }
 }
@@ -133,7 +133,7 @@ export const forgetPassword = async(req: Request, res: Response)=>{
         user.resetPasswordTokenExpiresAt = resetTokenExpiresAt;
         await user.save()
 
-        await sendMail({to: email, subject: "Recover your password", html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", `${process.env.FRONT_END_URL}/forget-password/${resetToken}`)})
+        await sendMail({to: email, subject: "Recover your password", html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", `${process.env.FRONT_END_URL}/reset-password/${resetToken}`)})
 
         res.status(200).json({success: true, message: "Check your email to recover your password."})
     }catch(error){
@@ -150,6 +150,7 @@ export const resetPassword = async(req: Request, res: Response)=>{
     try{
         const{resetPassword} = req.body;
         const {token} = req.params;
+        console.log(resetPassword, token)
 
         const user = await User.findOne({resetPasswordToken: token, resetPasswordTokenExpiresAt: {$gt: Date.now()}})
         if(!user){
@@ -176,7 +177,7 @@ export const checkAuth =async(req: AuthRequest, res: Response)=>{
     try{
         const user = await User.findById(req.userId).select("-password");
         if(!user){
-            return res.status(400).json({success: false, message: "Unauthorize token."})
+            return res.status(400).json({success: false, message: "Unauthorize token."});
         }
         res.status(200).json({user, success: true, message: "Authenticated."})
     }catch(error){
